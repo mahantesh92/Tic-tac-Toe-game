@@ -1,0 +1,132 @@
+from IPython.display import clear_output
+def displayboard(board):
+    clear_output()
+    print(board[7]+"|"+board[8]+"|"+board[9])
+    print(board[4]+"|"+board[5]+"|"+board[6])
+    print(board[1]+"|"+board[2]+"|"+board[3])
+testboard=['#','x','x','o','x','o','o','x','o','o']
+displayboard(testboard)
+
+def playerchoice():
+    
+    choice=''
+    while choice!='o' and choice!='x':
+        
+        choice=input("player 1 please make a choice ,x or o :")
+    player1=choice
+    if player1=='o':
+        
+        
+            
+        player2='x'
+    else:
+        player2='o'
+    return (player1,player2) 
+
+def placemarker(board,choice,position):
+    board[position]=choice
+def win_check(board,choice):
+    
+    return ((board[7] == choice and board[8] == choice and board[9] == choice) or # across the top
+    (board[4] == choice and board[5] == choice and board[6] == choice) or # across the middle
+    (board[1] == choice and board[2] == choice and board[3] == choice) or # across the bottom
+    (board[7] == choice and board[4] == choice and board[1] == choice) or # down the middle
+    (board[8] == choice and board[5] == choice and board[2] == choice) or # down the middle
+    (board[9] == choice and board[6] == choice and board[3] == choice) or # down the right side
+    (board[7] == choice and board[5] == choice and board[3] == choice) or # diagonal
+    (board[9] == choice and board[5] == choice and board[1] == choice)) # diagonal
+    
+import random
+def checkfirst():
+    flip=random.randint(0,1)
+    if flip==0:
+        return 'player 1'
+    else:
+        return 'player 2'
+
+def spacecheck(board,position):
+    return board[position]==' '
+
+def fullboard(board):
+    for i in range(1,10):
+        if spacecheck(board,i):
+            
+            return False
+    return True     
+    
+def player_choice(board):
+    position=0
+    while position not in [1,2,3,4,5,6,7,8,9] or not spacecheck(board,position):
+        position=int(input("enter the position you want to place marker:"))
+    return position
+    
+def replay():
+    userchoice=input("do you want to play again? yes or no")
+    return userchoice=='yes'    
+        
+print("welcome to TIC-TOE game!!")
+while True:
+    
+    
+#boardsetting
+    the_board=[' ']*10
+    (player1_marker,player2_marker)=playerchoice()
+    turn = checkfirst()
+    print(turn+ '\t has to play!')
+    choice1=input("do you want to start playing? y or n")
+    if choice1=='y':
+        game_on=True
+    else:
+        game_on=False
+    #gameplay
+    while game_on: 
+        if turn=='player 1':
+            #player1 gameplay
+            displayboard(the_board)
+            position=player_choice(the_board)
+            placemarker(the_board,player1_marker,position)
+            #win
+            if win_check(the_board,player1_marker)==True:
+                print("player 1 wins!!!")
+                game_on=False
+            else:
+                
+                if fullboard(the_board)==True:
+                    print("It is a tie game well played both!!")
+                    break
+                    
+                
+             
+                
+              
+                else:
+                    
+                    
+                    turn='player 2'
+        else:
+            displayboard(the_board)
+            position=player_choice(the_board)
+            placemarker(the_board,player2_marker,position)
+            #win
+            if win_check(the_board,player2_marker)==True:
+                print("player 2 wins!!!")
+                game_on=False
+            else:
+                
+                
+                if fullboard(the_board)==True:
+                    print("It is a tie game well played both!!")
+                    break
+                    
+                
+             
+                
+              
+                else:
+                    
+                    
+                    turn='player 1'
+            
+            
+    if not replay():
+        break
